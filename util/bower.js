@@ -41,10 +41,10 @@ bowerUtil.resolveMainPath = function resolveMain(component, version, callback) {
     return false;
   }
   pending++;
-  var args = ['info', '--json', component + '#' + version];
+  var args = ['node_modules/bower/bin/bower', 'info', '--json', component + '#' + version];
   var output = '';
   debug('resolving main property for component %s#%s', component, version);
-  var ps = spawn(which('bower'), args, {
+  var ps = spawn(which('node'), args, {
     stdio: ['ignore', 'pipe', 'ignore']
   });
 
