@@ -1,5 +1,5 @@
 {
-  "name": "google-cdn",
+  "name": "google-cdn-shahata",
   "version": "0.2.4",
   "description": "Replaces references to resources on the Google CDN",
   "keywords": [
@@ -7,8 +7,8 @@
     "google",
     "cdnjs"
   ],
-  "homepage": "https://github.com/passy/google-cdn",
-  "bugs": "https://github.com/passy/google-cdn/issues",
+  "homepage": "https://github.com/shahata/google-cdn",
+  "bugs": "https://github.com/shahata/google-cdn/issues",
   "author": {
     "name": "Pascal Hartig",
     "email": "phartig@rdrei.net",
@@ -17,7 +17,7 @@
   "main": "googlecdn.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/passy/google-cdn.git"
+    "url": "git://github.com/shahata/google-cdn.git"
   },
   "scripts": {
     "test": "mocha"

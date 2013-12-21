@@ -61,6 +61,9 @@ module.exports = function cdnify(content, bowerJson, options, callback) {
         if (err) {
           return callback(err);
         }
+        if (item.recursive) {
+          main = main.split('/').slice(0, -1).join('/');
+        }
 
         // Replace leading slashes if present.
         var fromRe = '/?' + requote(bowerUtil.joinComponent(options.componentsPath, main));
