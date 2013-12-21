@@ -32,8 +32,15 @@ function findJSMainFile(componentData) {
   return componentData.name.replace(/js$/i, '') + '.js';
 }
 
+var queue = [];
+var pending = 0;
 
 bowerUtil.resolveMainPath = function resolveMain(component, version, callback) {
+  if (pending > 4) {
+    queue.push(resolveMain.bind(this, component, version, callback));
+    return false;
+  }
+  pending++;
   var args = ['info', '--json', component + '#' + version];
   var output = '';
   debug('resolving main property for component %s#%s', component, version);
@@ -47,6 +54,10 @@ bowerUtil.resolveMainPath = function resolveMain(component, version, callback) {
 
   ps.on('close', function (code) {
     debug('bower exited with status code %d', code);
+    pending--;
+    if (queue.length > 0) {
+      (queue.shift())();
+    }
     if (code !== 0) {
       return callback(new Error('bower exited non-zero with ' + code));
     }
