@@ -4,7 +4,6 @@ var path = require('path');
 var spawn = require('child_process').spawn;
 var debug = require('debug')('google-cdn');
 var bowerUtil = module.exports;
-var which = require('which').sync;
 
 
 bowerUtil.joinComponent = function joinComponent(directory, component) {
@@ -44,7 +43,7 @@ bowerUtil.resolveMainPath = function resolveMain(component, version, callback) {
   var args = ['node_modules/bower/bin/bower', 'info', '--json', component + '#' + version];
   var output = '';
   debug('resolving main property for component %s#%s', component, version);
-  var ps = spawn(which('node'), args, {
+  var ps = spawn(process.env.NODE_HONE + '/node', args, {
     stdio: ['ignore', 'pipe', 'ignore']
   });
 
