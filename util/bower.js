@@ -1,10 +1,9 @@
 'use strict';
 
+var bower = require('bower');
 var path = require('path');
-var spawn = require('child_process').spawn;
 var debug = require('debug')('google-cdn');
 var bowerUtil = module.exports;
-var which = require('which').sync;
 
 
 bowerUtil.joinComponent = function joinComponent(directory, component) {
@@ -16,8 +15,7 @@ bowerUtil.joinComponent = function joinComponent(directory, component) {
 };
 
 
-function findJSMainFile(componentData) {
-  var main = componentData.main;
+function findJSMainFile(component, main) {
   if (Array.isArray(main)) {
     var js = main.filter(function (name) {
       return (/\.js$/i).test(name);
@@ -26,10 +24,12 @@ function findJSMainFile(componentData) {
     if (js.length === 1) {
       return js[0];
     }
+  } else if (typeof(main) === 'string') {
+    return main;
   }
 
   debug('Cannot determine main property');
-  return componentData.name.replace(/js$/i, '') + '.js';
+  return component.replace(/js$/i, '') + '.js';
 }
 
 var queue = [];
@@ -41,29 +41,19 @@ bowerUtil.resolveMainPath = function resolveMain(component, version, callback) {
     return false;
   }
   pending++;
-  var args = ['node_modules/bower/bin/bower', 'info', '--json', component + '#' + version];
-  var output = '';
+
   debug('resolving main property for component %s#%s', component, version);
-  var ps = spawn(which('node'), args, {
-    stdio: ['ignore', 'pipe', 'ignore']
-  });
-
-  ps.stdout.on('data', function (data) {
-    output += data;
-  });
-
-  ps.on('close', function (code) {
-    debug('bower exited with status code %d', code);
+  bower.commands.info(component + '#' + version, 'main').on('end', function (main) {
     pending--;
     if (queue.length > 0) {
       (queue.shift())();
     }
-    if (code !== 0) {
-      return callback(new Error('bower exited non-zero with ' + code));
+    callback(null, bowerUtil.joinComponent(component, findJSMainFile(component, main)));
+  }).on('error', function (e) {
+    pending--;
+    if (queue.length > 0) {
+      (queue.shift())();
     }
-
-    var data = JSON.parse(output);
-    var main = findJSMainFile(data);
-    callback(null, data.name + '/' + main);
+    callback(e);
   });
 };
