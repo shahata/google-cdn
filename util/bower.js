@@ -34,7 +34,7 @@ function findJSMainFile(component, main) {
 
 bowerUtil.resolveMainPath = function resolveMain(component, version, callback) {
   debug('resolving main property for component %s#%s', component, version);
-  bower.reset();
+  //bower.reset();
   bower.commands.info(component + '#' + version, 'main').on('end', function (main) {
     callback(null, bowerUtil.joinComponent(component, findJSMainFile(component, main)));
   }).on('error', callback);
