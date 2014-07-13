@@ -1,6 +1,6 @@
 {
   "name": "google-cdn-shahata",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "description": "Replaces references to resources on the Google CDN",
   "keywords": [
     "cdn",
@@ -50,6 +50,6 @@
     "debug": "~0.7.2",
     "async": "~0.2.9",
     "regexp-quote": "0.0.0",
-    "bower": "~1.2.8"
+    "bower": "~1.3.0"
   }
 }
