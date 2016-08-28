@@ -62,7 +62,7 @@ module.exports = function cdnify(content, bowerJson, options, callback) {
           return callback(err);
         }
         if (item.recursive) {
-          main = main.split('/').slice(0, -1).join('/');
+          main = main.split('/').slice(0, -1).concat(['']).join('/');
         }
 
         // Replace leading slashes if present.
